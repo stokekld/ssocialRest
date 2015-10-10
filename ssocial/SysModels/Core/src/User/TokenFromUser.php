@@ -8,7 +8,7 @@ namespace Core\User;
 class TokenFromUser
 {
 
-	protected $ttl = 1; // minutos
+	protected $ttl = 30; // minutos
 
 	protected $dataUser = [];
 

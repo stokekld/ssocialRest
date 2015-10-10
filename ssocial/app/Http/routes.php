@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 use Layer\User\Admin;
 use Core\User\TokenFromUser;
@@ -30,18 +31,30 @@ Route::post('logIn', function (Request $request) {
     
 	$credentials = $request->only(['user', 'password']);
 
+	// var_dump($credentials);
+
 	$data = Admin::logIn($credentials);
 
 	$token = TokenFromUser::getToken($data);
 
-	echo $token."\n\n";
+	return response()->json(compact("token"));
 
-	$user = UserFromToken::getUser("eyJpdiI6IkpQVVwvV2JldHNPZWhRZnpqQ1JDb09nPT0iLCJ2YWx1ZSI6IkpHN004V1FTakRRUUZ6NmRSaFpKbFRBRVJtZUNcL0Q4SkRwbkIwNVUzNEZKNWVvc3ZGeGhwek83eWMySXJSWk80Slwvakp2V0krZWpwbzdPYzJMQVBlWHI3VUgxaW1SbE1UV0RVaW9aRTVQMWtTMTVKZU1UU2c3YmYxckpOTG1LN3RWWVhIXC9sOFwvSnB5MVNKQTdObjV0RzdIbU04RVUwS3JlVVpwSE0xdVFEc0Q5YkhvVzZscStMb2VOSnlkYW5PYmJKT3kxeDdpMVJWYmVpcTMrYkRBYXVGbndDS2lcL0ErVEZGVGdXUlo0Y2FsYz0iLCJtYWMiOiI1OThiODExNDUxZWE5ZTFkZDIxOTRmZjRhZDBmNjE1YjcwN2EwODdkYmZlYWIyNmYzODUzY2U4YjJkMWU1OTA2In0=");
+});
 
-	var_dump($user);
+
+Route::post('verify', function (Request $request) {
+
+	$headers = getallheaders();
+
+	$token = $headers['Authorization'];
+
+	$user = UserFromToken::getUser($token);
 
 	$verify = AuthUser::verify($user);
 
-	var_dump($verify);
+	return response()->json(compact("verify"));
 
 });
+
+
+
