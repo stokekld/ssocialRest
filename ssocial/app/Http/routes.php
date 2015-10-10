@@ -22,24 +22,12 @@ use Core\User\AuthUser;
 Route::get('/', function () {
     
 	
-
+	echo "hola";
 	
 
 });
 
-Route::post('logIn', function (Request $request) {
-    
-	$credentials = $request->only(['user', 'password']);
-
-	// var_dump($credentials);
-
-	$data = Admin::logIn($credentials);
-
-	$token = TokenFromUser::getToken($data);
-
-	return response()->json(compact("token"));
-
-});
+Route::post('logIn', ['uses' => 'SysControllers\LogController@logIn']);
 
 
 Route::post('verify', function (Request $request) {

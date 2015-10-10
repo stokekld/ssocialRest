@@ -43,13 +43,20 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $e)
     {
 
+        if ( $e instanceof \Core\Exception\RestException )
+            return response()->json($e -> getResponse(), $e -> getCode());
+            
+
         // var_dump($e);
-        if ($e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException($e->getMessage(), $e);
-        }
+        // if ($e instanceof ModelNotFoundException) {
+        //     $e = new NotFoundHttpException($e->getMessage(), $e);
+        // }
 
-        // return parent::render($request, $e);
+        if ( $e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException )
+            return response()->json(['error' => true, 'type' => 'MethodNotAllowedHttpException' ], $e -> getStatusCode());
 
-        return response()->json(['error' => true, 'message' => $e -> getMessage()], 500);
+        return parent::render($request, $e);
+
+        // return response()->json(['error' => true, 'type' => 'desconocido', 'message' => $e -> getMessage()], 500);
     }
 }
