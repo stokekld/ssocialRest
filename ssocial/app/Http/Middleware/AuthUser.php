@@ -3,7 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Core\User;
+use Core\User\Auth;
+use Core\Exception;
 
 class AuthUser
 {
@@ -18,20 +19,25 @@ class AuthUser
     {
         $headers = getallheaders();
 
+
         if (!isset($headers['Authorization']))
-            throw new \Exception("Error de Authorization", 1);
+            throw new Exception\RestException(__FILE__, "Falta token de autorización.", 401, ['message' => 'Falta token de autorización.']);
 
         $token = $headers['Authorization'];
 
-        $user = User\UserFromToken::getUser($token);
+        $user = Auth\UserFromToken::getUser($token);
 
-        var_dump($user);
-
-        $tokenRefresh = User\AuthUser::verify($user);
+        $tokenRefresh = Auth\AuthUser::verify($user);
+        // dd($tokenRefresh);
 
         if (!$tokenRefresh)
-            throw new \Exception("Error de Authorization", 1);
-        // return response()->json(compact("verify"));
+            throw new Exception\RestException(__FILE__, "Token no válido.", 401, ["message" => "Token no válido."]);
+
+        $userSys = \App::make('UserSys');
+
+        $userSys -> load($user);
+        $userSys -> token = $tokenRefresh;
+
         return $next($request);
     }
 }

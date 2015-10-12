@@ -1,6 +1,8 @@
 <?php
 
-namespace Core\User;
+namespace Core\User\Auth;
+
+use Core\Exception;
 
 /**
 * 
@@ -15,7 +17,7 @@ class TokenFromUser
 	function __construct($dataUser = null)
 	{
 		if ( !isset($dataUser) OR empty($dataUser) )
-			throw new \Exception("Class TokenFromUser: dataUser no debe de estar vacio o indefinido.");
+			throw new Exception\RestException(__FILE__, "Class TokenFromUser: dataUser no debe de estar vacio o indefinido.", 500 );
 
 		$this -> dataUser = $dataUser;
 	}

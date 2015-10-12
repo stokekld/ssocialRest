@@ -1,2 +1,23 @@
 {
+	"folders":
+	[
+		{
+			"path": "../ssocial/SysModels"
+		},
+		{
+			"path": "../ssocial/app/Exceptions"
+		},
+		{
+			"path": "../ssocial/app/Http"
+		},
+		{
+			"path": "../ssocial/tests"
+		},
+		{
+			"path": "../ssocial/app/Providers"
+		},
+		{
+			"path": "../ssocial"
+		}
+	]
 }

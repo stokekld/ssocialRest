@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\User;
+namespace Core\User\Auth;
 
 /**
 * 
@@ -13,7 +13,7 @@ class UserFromToken
 	function __construct($token = null)
 	{
 		if ( !is_string($token) )
-			throw new \Exception("Class UserFromToken: token debe ser un string.");
+			throw new Exception\RestException(__FILE__, "Class UserFromToken: token debe ser un string.", 500 );
 
 		$this -> token = $token;
 	}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\User;
+namespace Core\User\Auth;
 /**
 * 
 */

@@ -9,11 +9,11 @@ trait logInTrait
     public static function logIn($credentials, $fieldId, $fieldUser, $fieldPass, $type)
     {
         if ( !is_array($credentials) )
-            throw new \Exception("logIn: credentials debe ser un array.");
-        	
+        	throw new Exception\RestException(__FILE__, "logIn: credentials debe ser un array.", 500);
+            
 
         if ( !isset($credentials['user']) OR !isset($credentials['password']) )
-        	throw new Exception\RestException(__FILE__, "logIn: faltan argumentos en las credenciales.", 404);
+            throw new Exception\RestException(__FILE__, "logIn: faltan argumentos en las credenciales.", 400, ['message' => 'Faltan argumentos en las credenciales.']);
             
 
     	$obj = new static();

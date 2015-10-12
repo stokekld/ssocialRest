@@ -11,14 +11,6 @@
 |
 */
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-
-use Layer\User\Admin;
-use Core\User\TokenFromUser;
-use Core\User\UserFromToken;
-use Core\User\AuthUser;
-
 Route::get('/', function () {
     
 	
@@ -30,7 +22,13 @@ Route::get('/', function () {
 Route::post('logIn', ['uses' => 'SysControllers\LogController@logIn']);
 
 Route::post('verify', ['middleware' => 'auth.user', function(){
+
+
 	echo "entro";
+
+	$userSys = App::make('UserSys');
+
+	var_dump($userSys);
 }]);
 
 

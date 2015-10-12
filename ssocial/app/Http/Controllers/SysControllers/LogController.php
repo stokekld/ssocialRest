@@ -4,7 +4,8 @@ namespace App\Http\Controllers\SysControllers;
 
 use App\Http\Controllers\Controller;
 use Layer\User\Admin;
-use Core\User\TokenFromUser;
+use Core\User\Auth\TokenFromUser;
+use Core\Exception;
 
 /**
 * 
@@ -19,7 +20,7 @@ class LogController extends Controller
 		$data = Admin::logIn($credentials, "id_admin", "admin_user", "admin_pass", "admin");
 
 		if( !$data )
-			return response()->json(["error" => true, "message" => "El usuario/password no es correcto."]);
+			throw new Exception\RestException(__FILE__, "El usuario/password no es correcto.", 401, ["message" => "El usuario/password no es correcto."]);
 
 		$token = TokenFromUser::getToken($data);
 
