@@ -29,20 +29,24 @@ Route::get('/', function () {
 
 Route::post('logIn', ['uses' => 'SysControllers\LogController@logIn']);
 
+Route::post('verify', ['middleware' => 'auth.user', function(){
+	echo "entro";
+}]);
 
-Route::post('verify', function (Request $request) {
 
-	$headers = getallheaders();
+// Route::post('verify', function (Request $request) {
 
-	$token = $headers['Authorization'];
+// 	// $headers = getallheaders();
 
-	$user = UserFromToken::getUser($token);
+// 	// $token = $headers['Authorization'];
 
-	$verify = AuthUser::verify($user);
+// 	// $user = UserFromToken::getUser($token);
 
-	return response()->json(compact("verify"));
+// 	// $verify = AuthUser::verify($user);
 
-});
+// 	// return response()->json(compact("verify"));
+
+// });
 
 
 
