@@ -19,7 +19,6 @@ class AuthUser
     {
         $headers = getallheaders();
 
-
         if (!isset($headers['Authorization']))
             throw new Exception\RestException(__FILE__, "Falta token de autorización.", 401, ['message' => 'Falta token de autorización.']);
 
@@ -27,14 +26,16 @@ class AuthUser
 
         $user = Auth\UserFromToken::getUser($token);
 
-        $tokenRefresh = Auth\AuthUser::verify($user);
-        // dd($tokenRefresh);
-
-        if (!$tokenRefresh)
+        if (!$user)
             throw new Exception\RestException(__FILE__, "Token no válido.", 401, ["message" => "Token no válido."]);
 
-        $userSys = \App::make('UserSys');
+        $tokenRefresh = Auth\AuthUser::verify($user);
 
+        if (!$tokenRefresh)
+            throw new Exception\RestException(__FILE__, "Token obsoleto.", 401, ["message" => "Token obsoleto."]);
+
+
+        $userSys = \App::make('UserSys');
         $userSys -> load($user);
         $userSys -> token = $tokenRefresh;
 

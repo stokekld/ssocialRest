@@ -32,6 +32,21 @@ Route::post('verify', ['middleware' => 'auth.user', function(){
 }]);
 
 
+
+use Core\Log\Log;
+Event::listen('illuminate.query', function($query, $bindings, $time, $name)
+{
+
+	$data = [
+		"time" => $time,
+		"query" => $query,
+		"bindings" => $bindings
+	];
+
+	Log::addDebug($name, $data );
+});
+
+
 // Route::post('verify', function (Request $request) {
 
 // 	// $headers = getallheaders();

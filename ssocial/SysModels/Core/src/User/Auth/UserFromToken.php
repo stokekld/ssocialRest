@@ -2,6 +2,8 @@
 
 namespace Core\User\Auth;
 
+use Core\Exception;
+
 /**
 * 
 */

@@ -11,9 +11,11 @@ trait logInTrait
         if ( !is_array($credentials) )
         	throw new Exception\RestException(__FILE__, "logIn: credentials debe ser un array.", 500);
             
-
         if ( !isset($credentials['user']) OR !isset($credentials['password']) )
             throw new Exception\RestException(__FILE__, "logIn: faltan argumentos en las credenciales.", 400, ['message' => 'Faltan argumentos en las credenciales.']);
+
+        if ( $credentials['user'] == "" OR $credentials['password'] == "" )
+            throw new Exception\RestException(__FILE__, "logIn: los argumentos no pueden estar vacios.", 400, ['message' => 'Los argumentos no pueden estar vacios.']);
             
 
     	$obj = new static();

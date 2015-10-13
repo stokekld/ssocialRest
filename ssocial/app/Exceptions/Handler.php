@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+use Core\Log\Log;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -42,6 +44,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        // echo var_dump($e);
 
         if ( $e instanceof \Core\Exception\RestException )
             return response()->json($e -> getResponse(), $e -> getCode());
@@ -53,7 +56,16 @@ class Handler extends ExceptionHandler
         // }
 
         if ( $e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException )
+        {
+            Log::addException(__FILE__, $e -> getMessage(), $e -> getStatusCode() );
             return response()->json(['error' => true, 'type' => 'MethodNotAllowedHttpException' ], $e -> getStatusCode());
+        }
+
+        if ( $e instanceof \PDOException )
+        {
+            Log::addException(__FILE__, $e -> getMessage(), $e -> getCode() );
+            return response()->json(['error' => true, 'type' => 'PDOException' ], 500);
+        }
 
         return parent::render($request, $e);
 
