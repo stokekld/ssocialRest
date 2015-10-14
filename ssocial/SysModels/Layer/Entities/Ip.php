@@ -5,6 +5,7 @@ namespace Layer\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Core\Exception\RestException;
 use Core\Manager\ManagerTrait;
+use Core\Repository\RepositoryTrait;
 
 /**
 * 
@@ -12,7 +13,7 @@ use Core\Manager\ManagerTrait;
 class Ip extends Model 
 {
 
-	use ManagerTrait;
+	use ManagerTrait, RepositoryTrait;
 
     protected $table = 'ip_s';
 
@@ -36,9 +37,13 @@ class Ip extends Model
     	return $this -> insert($data);
     }
 
-    public function search()
+    public function search($where = [])
     {
-    	return $this -> all();
+        $results = $this->where($where)->get()->each(function($item){
+            $item -> translateToUser();
+        })->toArray();
+
+        return $results;
     }
 	
 }

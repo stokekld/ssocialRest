@@ -16,14 +16,18 @@ class IpController extends Controller
 
 		$ip = new Ip;
 
-		return response()->json($ip -> add($data), 201);
-		
+		return response()->json( $ip -> add($data), 201);		
 	}
 
 	public function all()
 	{
 		$ip = new Ip;
 
-		return $ip -> search();
+		return response()->json( $ip -> search(), 200 );
+	}
+
+	public function one($id)
+	{
+		return Ip::find($id)->translateToUser()->toArray();
 	}
 }

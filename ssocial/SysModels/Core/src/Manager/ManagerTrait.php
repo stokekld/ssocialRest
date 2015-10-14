@@ -29,26 +29,6 @@ trait ManagerTrait
 			
 	}
 
-	public function translateToUser($data)
-	{
-		if ( !isset($this -> dictionary) )
-			throw new RestException(__FILE__, "validation: No existe el diccionario.", 500);
-
-		$dic = $this -> dictionary;
-
-		$results = [];
-
-		foreach ($data as $field => $value)
-		{
-			if ( !($key = array_search($field, $dic)) )
-				throw new RestException(__FILE__, "Validation: No existe en el diccionario la regla ".$field.".", 500, ["message" => "No existe en el diccionario la regla ".$field."."]);
-
-			$results[$key] = $value;
-		}
-
-		return $results;
-	}
-
 	public function insert($data)
 	{
 		if ( !isset($this -> dictionary) )
@@ -70,9 +50,9 @@ trait ManagerTrait
 
 		$pk = $insert -> getKeyName();
 
-		$inserted = self::find( $insert -> $pk )->toArray();
+		$inserted = self::find( $insert -> $pk )->translateToUser();
 
-		return $this -> translateToUser($inserted);
+		return $inserted -> toArray();
 
 	}
 }

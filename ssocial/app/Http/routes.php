@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth.user'], function(){
 
 	Route::post('ip', ['uses' => 'SysControllers\IpController@add']);
 	Route::get('ip', ['uses' => 'SysControllers\IpController@all']);
+	Route::get('ip/{id}', ['uses' => 'SysControllers\IpController@one']);
 
 });
 
@@ -45,21 +46,3 @@ Event::listen('illuminate.query', function($query, $bindings, $time, $name)
 
 	Log::addDebug($name, $data );
 });
-
-
-// Route::post('verify', function (Request $request) {
-
-// 	// $headers = getallheaders();
-
-// 	// $token = $headers['Authorization'];
-
-// 	// $user = UserFromToken::getUser($token);
-
-// 	// $verify = AuthUser::verify($user);
-
-// 	// return response()->json(compact("verify"));
-
-// });
-
-
-
