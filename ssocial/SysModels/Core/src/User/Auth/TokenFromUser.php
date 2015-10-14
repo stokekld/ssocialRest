@@ -10,7 +10,7 @@ use Core\Exception;
 class TokenFromUser
 {
 
-	protected $ttl = 10; // minutos
+	protected $ttl = 30; // minutos
 
 	protected $dataUser = [];
 

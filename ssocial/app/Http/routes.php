@@ -21,15 +21,15 @@ Route::get('/', function () {
 
 Route::post('logIn', ['uses' => 'SysControllers\LogController@logIn']);
 
-Route::post('verify', ['middleware' => 'auth.user', function(){
+Route::group(['middleware' => 'auth.user'], function(){
+
+	Route::post('ip', ['uses' => 'SysControllers\IpController@add']);
+	Route::get('ip', ['uses' => 'SysControllers\IpController@all']);
+
+});
 
 
-	echo "entro";
 
-	$userSys = App::make('UserSys');
-
-	var_dump($userSys);
-}]);
 
 
 

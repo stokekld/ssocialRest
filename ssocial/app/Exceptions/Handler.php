@@ -61,6 +61,12 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => true, 'type' => 'MethodNotAllowedHttpException' ], $e -> getStatusCode());
         }
 
+        if ( $e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException )
+        {
+            Log::addException(__FILE__, $e -> getMessage(), $e -> getStatusCode() );
+            return response()->json(['error' => true, 'type' => 'NotFoundHttpException' ], $e -> getStatusCode());
+        }
+
         if ( $e instanceof \PDOException )
         {
             Log::addException(__FILE__, $e -> getMessage(), $e -> getCode() );
