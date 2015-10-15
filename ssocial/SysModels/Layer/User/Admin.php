@@ -3,7 +3,7 @@
 namespace Layer\User;
 
 use Illuminate\Database\Eloquent\Model;
-use Core\User\logInTrait;
+use Core\User\Helper\logInTrait;
 
 class Admin extends Model 
 {

@@ -3,23 +3,22 @@
 namespace Layer\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Core\Exception\RestException;
-use Core\Manager\ManagerTrait;
-use Core\Repository\RepositoryTrait;
-
+use Core\DataServices\DataServicesTrait;
 /**
 * 
 */
 class Ip extends Model 
 {
 
-	use ManagerTrait, RepositoryTrait;
+	use DataServicesTrait;
 
     protected $table = 'ip_s';
 
     public $timestamps = false;
 
     protected $primaryKey = 'id_ip';
+
+    protected $guarded = ['id_ip'];
 
     // nombre => nombre en base
     protected $dictionary = [
@@ -35,15 +34,6 @@ class Ip extends Model
     public function add($data)
     {
     	return $this -> insert($data);
-    }
-
-    public function search($where = [])
-    {
-        $results = $this->where($where)->get()->each(function($item){
-            $item -> translateToUser();
-        })->toArray();
-
-        return $results;
     }
 	
 }

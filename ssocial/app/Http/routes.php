@@ -14,7 +14,7 @@
 Route::get('/', function () {
     
 	
-	echo "hola";
+	var_dump(response());
 	
 
 });
@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth.user'], function(){
 
 	Route::post('ip', ['uses' => 'SysControllers\IpController@add']);
 	Route::get('ip', ['uses' => 'SysControllers\IpController@all']);
-	Route::get('ip/{id}', ['uses' => 'SysControllers\IpController@one']);
+	Route::delete('ip/{id}', ['uses' => 'SysControllers\IpController@del']);
 
 });
 

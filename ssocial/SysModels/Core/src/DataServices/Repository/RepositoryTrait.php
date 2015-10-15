@@ -1,7 +1,9 @@
 <?php
 
-namespace Core\Repository;
+namespace Core\DataServices\Repository;
 
+
+use Core\Exception\RestException;
 /**
 * 
 */
@@ -11,14 +13,12 @@ trait RepositoryTrait
 	public function translateToUser()
 	{
 		$attributes = $this -> attributes;
-		$dic = $this -> dictionary;
 
 		$newAttributes = [];
 
 		foreach ($attributes as $field => $value)
 		{
-			if ( !($key = array_search($field, $dic)) )
-				throw new RestException(__FILE__, "Validation: No existe en el diccionario la regla ".$field.".", 500, ["message" => "No existe en el diccionario la regla ".$field."."]);
+			$key = $this -> getKeyDictionary($field);
 
 			$newAttributes[$key] = $value;
 		}
@@ -26,5 +26,15 @@ trait RepositoryTrait
 		$this -> attributes = $newAttributes;
 
 		return $this;
+	}
+
+	public function one($id)
+	{
+		$item = $this -> find($id);
+
+		if ( count($item) == 0 )
+			return [];
+
+		return $item -> translateToUser()->toArray();
 	}
 }

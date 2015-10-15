@@ -44,7 +44,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        // echo var_dump($e);
+        // var_dump($e -> errorInfo[1]);
 
         if ( $e instanceof \Core\Exception\RestException )
             return response()->json($e -> getResponse(), $e -> getCode());
@@ -70,7 +70,11 @@ class Handler extends ExceptionHandler
         if ( $e instanceof \PDOException )
         {
             Log::addException(__FILE__, $e -> getMessage(), $e -> getCode() );
-            return response()->json(['error' => true, 'type' => 'PDOException' ], 500);
+
+            if ($e -> errorInfo[1] == 1062)
+                $message = "Elemento duplicado.";
+
+            return response()->json(['error' => true, 'type' => 'PDOException', 'message' => $message ], 500);
         }
 
         return parent::render($request, $e);
