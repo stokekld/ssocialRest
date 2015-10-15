@@ -30,10 +30,5 @@ class Ip extends Model
     	"id_ipp" => [''],
     	"ipp"	=> ['required|regex:/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/']
     ];
-
-    public function add($data)
-    {
-    	return $this -> insert($data);
-    }
 	
 }

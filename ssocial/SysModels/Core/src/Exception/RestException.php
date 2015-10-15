@@ -17,7 +17,7 @@ class RestException extends Exception
 		Log::addException($file, $message, $httpCode);
 
 		$this -> code = $httpCode;
-		$this -> response =  array_merge(['error' => true], $response);
+		$this -> response =  array_merge(['error' => true, 'httpCode' => $httpCode], $response);
 
 
         parent::__construct($message, $this -> getCode());

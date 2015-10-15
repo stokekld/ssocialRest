@@ -36,7 +36,7 @@ trait ManagerTrait
 		if ( $validation -> fails() )
 		{
 			$message = $validation->messages()->first($field);
-			$this -> throwException(__FILE__, "Validation: $message", 500, ["message" => $message]);
+			$this -> throwException(__FILE__, "Validation: $message", 400, ["message" => $message]);
 		}
 
 		return $value;

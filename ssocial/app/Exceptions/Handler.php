@@ -58,23 +58,25 @@ class Handler extends ExceptionHandler
         if ( $e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException )
         {
             Log::addException(__FILE__, $e -> getMessage(), $e -> getStatusCode() );
-            return response()->json(['error' => true, 'type' => 'MethodNotAllowedHttpException' ], $e -> getStatusCode());
+            return response()->json(['error' => true, 'httpCode' => $e -> getStatusCode(), 'type' => 'MethodNotAllowedHttpException' ], $e -> getStatusCode());
         }
 
         if ( $e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException )
         {
             Log::addException(__FILE__, $e -> getMessage(), $e -> getStatusCode() );
-            return response()->json(['error' => true, 'type' => 'NotFoundHttpException' ], $e -> getStatusCode());
+            return response()->json(['error' => true, 'httpCode' => $e -> getStatusCode(), 'type' => 'NotFoundHttpException' ], $e -> getStatusCode());
         }
 
         if ( $e instanceof \PDOException )
         {
             Log::addException(__FILE__, $e -> getMessage(), $e -> getCode() );
 
+            $message = "";
+
             if ($e -> errorInfo[1] == 1062)
                 $message = "Elemento duplicado.";
 
-            return response()->json(['error' => true, 'type' => 'PDOException', 'message' => $message ], 500);
+            return response()->json(['error' => true, 'httpCode' => 500, 'type' => 'PDOException', 'message' => $message ], 409);
         }
 
         return parent::render($request, $e);

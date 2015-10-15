@@ -18,7 +18,7 @@ class UserSys
 
 	public function response($motor, $data, $code)
 	{
-		 $data = array_merge( [ 'token' => $this -> token ], [ 'data' => $data]);
+		$data = array_merge( [ 'token' => $this -> token ], [ 'data' => $data]);
 
 		return $motor -> json($data, $code);
 	}

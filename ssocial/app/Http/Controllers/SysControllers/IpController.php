@@ -5,7 +5,9 @@ use App\Http\Controllers\Controller;
 use Layer\Entities\Ip;
 
 /**
-* 
+* Datos provenientes del usuario
+*
+* ipp: ip en formato xxx.xxx.xxx.xxx
 */
 class IpController extends Controller
 {
@@ -23,19 +25,12 @@ class IpController extends Controller
 	{
 		$data = request()->json()->all();
 
-		return $this -> user -> response( response(), $this -> ip -> add($data), 201);		
+		return $this -> user -> response( response(), $this -> ip -> insert($data), 201);		
 	}
 
 	public function all()
 	{
-		$ip = new Ip;
-
 		return $this -> user -> response( response(), $this -> ip -> all() -> toArray(), 200 );
-	}
-
-	public function one($id)
-	{
-		return $this -> user -> response( response(), $this -> ip -> one($id), 200 ); 
 	}
 
 	public function del($id)

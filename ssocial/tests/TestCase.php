@@ -22,4 +22,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         return $app;
     }
+
+    public function getTokenAdmin()
+    {
+        $credentials = ['user' => 'admin', 'password' => 'de5bbd7c6f5db21568d17697d2761605'];
+
+        $json = $this -> call('post', 'logIn', [], [], [], [], json_encode($credentials))->content();
+
+        $array = json_decode($json, true);
+
+        return $array['token'];
+    }
 }

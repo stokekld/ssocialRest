@@ -17,12 +17,10 @@ class AuthUser
      */
     public function handle($request, Closure $next)
     {
-        $headers = getallheaders();
+        $token = $request->header('Authorization');
 
-        if (!isset($headers['Authorization']))
+        if (!isset($token))
             throw new Exception\RestException(__FILE__, "Falta token de autorización.", 401, ['message' => 'Falta token de autorización.']);
-
-        $token = $headers['Authorization'];
 
         $user = Auth\UserFromToken::getUser($token);
 
