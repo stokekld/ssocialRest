@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth.user'], function(){
 
 	Route::post('ip', ['uses' => 'SysControllers\IpController@add']);
 	Route::get('ip', ['uses' => 'SysControllers\IpController@all']);
-	Route::delete('ip/{id}', ['uses' => 'SysControllers\IpController@del']);
+	Route::delete('ip/{id}', ['uses' => 'SysControllers\IpController@delete']);
 
 });
 

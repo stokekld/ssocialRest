@@ -137,7 +137,6 @@ class Log
 	* @param string $file Nombre del archivo donde se generó la excepción.
 	* @param string $message Mensaje de la excepción.
 	* @param int $code Código propio de la excepción.
-	* @param boolean $throw Si es true lanza la excepción.
 	*/
 	public static function addException($file, $message, $code)
 	{

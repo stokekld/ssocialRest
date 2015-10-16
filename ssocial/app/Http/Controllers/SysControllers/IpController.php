@@ -30,11 +30,11 @@ class IpController extends Controller
 
 	public function all()
 	{
-		return $this -> user -> response( response(), $this -> ip -> all() -> toArray(), 200 );
+		return $this -> user -> response( response(), $this -> ip -> allThem(), 200 );
 	}
 
-	public function del($id)
+	public function delete($id)
 	{
-		return $this -> user -> response( response(), $this -> ip -> del($id), 200 ); 
+		return $this -> user -> response( response(), $this -> ip -> deleteById($id), 200 ); 
 	}
 }

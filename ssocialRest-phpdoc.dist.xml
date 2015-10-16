@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <title>Servicio Social (REST)</title>
+  <parser>
+    <target>./documentacion</target>
+    <encoding>utf8</encoding>
+  </parser>
+  <transformer>
+    <target>./documentacion</target>
+  </transformer>
+  <files>
+    <directory>./ssocial/SysModels/</directory>
+  </files>
+</phpdoc>
