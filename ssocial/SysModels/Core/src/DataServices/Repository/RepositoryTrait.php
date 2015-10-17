@@ -2,7 +2,7 @@
 /**
 * Archivo que contiene el trait RepositoryTrait
 * @author Humberto de Jesus Flores Acuña <joy_warmgun@hotmail.com>
-* @version 0.0.1
+* @version 0.0.2
 * @package Core\DataServices\Repository
 */
 
@@ -15,6 +15,18 @@ namespace Core\DataServices\Repository;
 */
 trait RepositoryTrait
 {
+
+	/**
+	* @var array $operators Contiene los diferentes operadores para realizar un where
+	*/
+	protected $operators = [
+		'q' => '=',
+		'l' => 'like',
+		'nq' => '<>',
+		'gt' => '>',
+		'lt' => '<',
+	];
+
 	/**
 	* Método para obtener todos los registros ya traducidos;
 	*/
@@ -48,5 +60,70 @@ trait RepositoryTrait
 			return $item -> translateToUser()->toArray();
 			
 		return $item;
+	}
+
+	/**
+	* Método para parsear los parametros de una busqueda y retorna un array con las funciones necesarias para realizar la consulta y sus parametros.
+	* 
+	* @param array $data Contiene los parametros desde la uri
+	* 
+	* @throws \Exception Si $data no es un array o está indefinido. 
+	* 
+	* @return array
+	*/
+	protected function parseSearch($data = null)
+	{
+		if ( !isset($data) OR !is_array($data) )
+			$this -> throwException(__FILE__, "parseSearch: Data es de formato erroneo.", 500);
+
+		$operators = $this -> operators;
+		$where = array();
+		$orWhere = array();
+
+		$functions = array();
+
+		foreach ($operators as $operator => $value)
+		{
+			if ( isset($data[$operator]) )
+			{
+				$string = $data[$operator];
+
+				$fields = explode(',', $string);
+
+				foreach ($fields as $field)
+				{
+
+					// if ( strpos($field, '|') )
+					if ( preg_match("/([^:]+)::([^:]+)/", $field) )
+					{
+						$result = explode('::', $field);
+						array_push($result, $value);
+						$orWhere = array_merge($orWhere, $result);
+
+						$functions = array_merge( $functions, [ ['orWhere', [$result[0], $value, $result[1]]] ] );
+					}
+					// else if ( strpos($field, ':') )
+					else if ( preg_match("/([^:]+):([^:]+)/", $field) )
+					{
+						$result = explode(':', $field);
+						array_push($result, $value);
+						$where = array_merge($where, $result);
+						$functions = array_merge( $functions, [ ['where', [$result[0], $value, $result[1]]] ] );
+					}
+
+
+				}
+				
+			}
+		}
+
+		if ( isset($data['sort']) )
+			$functions = array_merge( $functions, [ ['orderBy', explode(',', $data['sort'])] ] );
+		if ( isset($data['paginate']) )
+			$functions = array_merge( $functions, [ ['paginate', [ $data['paginate'] ] ] ] );
+
+
+		return $functions;
+
 	}
 }
