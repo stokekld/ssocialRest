@@ -77,8 +77,6 @@ trait RepositoryTrait
 			$this -> throwException(__FILE__, "parseSearch: Data es de formato erroneo.", 500);
 
 		$operators = $this -> operators;
-		$where = array();
-		$orWhere = array();
 
 		$functions = array();
 
