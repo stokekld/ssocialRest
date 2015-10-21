@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\SysControllers;
 
 use App\Http\Controllers\Controller;
-
 use Layer\User\Servicio;
 
 /**
@@ -35,7 +34,19 @@ class ServicioController extends Controller
 
 	public function all()
 	{
-		return $this -> user -> response( response(), $this -> servicio -> allThem(), 200 );
+		$data = request()->all();
+
+		if ( empty($data) )
+			return $this -> user -> response( response(), $this -> servicio -> allThem(), 200 );
+		else
+			return $this -> user -> response( response(), $this -> servicio -> search($data), 200 );
+	}
+
+	public function update($id)
+	{
+		$data = request()->json()->all();
+		
+		return $this -> user -> response( response(), $this -> servicio -> updateByID($id, $data), 200);		
 	}
 
 	public function delete($id)

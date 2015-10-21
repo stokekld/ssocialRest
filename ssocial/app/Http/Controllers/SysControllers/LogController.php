@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SysControllers;
 
 use App\Http\Controllers\Controller;
 use Layer\User\Admin;
+use Layer\User\Servicio;
 use Core\User\Auth\TokenFromUser;
 use Core\Exception\RestException;
 
@@ -21,6 +22,9 @@ class LogController extends Controller
 		$credentials = request()->json()->all();
 
 		$data = Admin::logIn($credentials, "id_admin", "admin_user", "admin_pass", "admin");
+
+		if( !$data )
+			$data = Servicio::logIn($credentials, "id_serv", "serv_user", "serv_pass", "servicio");
 
 		if( !$data )
 			throw new RestException(__FILE__, "El usuario/password no es correcto.", 401, ["message" => "El usuario/password no es correcto."]);

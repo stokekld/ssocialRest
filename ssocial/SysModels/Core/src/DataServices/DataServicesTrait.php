@@ -57,15 +57,15 @@ trait DataServicesTrait
 	}
 
 
-	// public function getFieldDictionary($field = "")
-	// {
-	// 	$dic = $this -> getDictionary();
+	public function getFieldDictionary($field = "")
+	{
+		$dic = $this -> getDictionary();
 
-	// 	if ( $field == "" OR !isset( $dic[$field] ) )
-	// 		$this -> throwException(__FILE__, "insert: No existe en el diccionario la regla $field.", 500, ["message" => "No existe en el diccionario la regla $field." ]);
+		if ( $field == "" OR !isset( $dic[$field] ) )
+			$this -> throwException(__FILE__, "insert: No existe en el diccionario la regla $field.", 500, ["message" => "No existe en el diccionario la regla $field." ]);
 
-	// 	return $dic[$field];
-	// }
+		return $dic[$field];
+	}
 
 
 	/**

@@ -104,6 +104,26 @@ trait ManagerTrait
 		return self::find( $insert -> $pk )->translateToUser() -> toArray();
 	}
 
+	public function updateByID($id, $data)
+	{
+		$pk = $this -> getKeyName();
+		$dic = $this -> getDictionary();
+
+		$update = $this -> findById($id);
+
+		foreach ($data as $field => $value)
+		{
+			$fieldDB = $this -> getFieldDictionary($field);
+
+			if ($fieldDB != $pk)
+				$update -> $fieldDB = $this -> validation( $field, $data[$field]);
+		}
+
+		$update -> save();
+
+		return $this -> findById($id, true);
+	}
+
 	/**
 	* Método para eliminar un registro mediante su id.
 	*

@@ -62,6 +62,31 @@ trait RepositoryTrait
 		return $item;
 	}
 
+	public function search($data = array())
+	{
+		$where = $this -> parseSearch($data);
+
+		$select = new static();
+
+		foreach ($where as $values)
+		{
+			$select = call_user_func_array([$select, $values[0]], $values[1]);
+
+			if ($values[0] == 'paginate')
+			{
+				return $select -> each( function($item){
+					$item -> translateToUser();
+				});
+			}
+		}
+
+		$result = $select -> get();
+
+		return $result -> each( function($item){
+			$item -> translateToUser();
+		});
+	}
+
 	/**
 	* Método para parsear los parametros de una busqueda y retorna un array con las funciones necesarias para realizar la consulta y sus parametros.
 	* 
@@ -96,17 +121,17 @@ trait RepositoryTrait
 					{
 						$result = explode('::', $field);
 						array_push($result, $value);
-						$orWhere = array_merge($orWhere, $result);
+						// $orWhere = array_merge($orWhere, $result);
 
-						$functions = array_merge( $functions, [ ['orWhere', [$result[0], $value, $result[1]]] ] );
+						$functions = array_merge( $functions, [ ['orWhere', [$this -> getFieldDictionary($result[0]), $value, $result[1]]] ] );
 					}
 					// else if ( strpos($field, ':') )
 					else if ( preg_match("/([^:]+):([^:]+)/", $field) )
 					{
 						$result = explode(':', $field);
 						array_push($result, $value);
-						$where = array_merge($where, $result);
-						$functions = array_merge( $functions, [ ['where', [$result[0], $value, $result[1]]] ] );
+						// $where = array_merge($where, $result);
+						$functions = array_merge( $functions, [ ['where', [$this -> getFieldDictionary($result[0]), $value, $result[1]]] ] );
 					}
 
 
@@ -119,7 +144,6 @@ trait RepositoryTrait
 			$functions = array_merge( $functions, [ ['orderBy', explode(',', $data['sort'])] ] );
 		if ( isset($data['paginate']) )
 			$functions = array_merge( $functions, [ ['paginate', [ $data['paginate'] ] ] ] );
-
 
 		return $functions;
 

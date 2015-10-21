@@ -27,12 +27,14 @@ Route::group(['middleware' => 'auth.user'], function(){
 	Route::get('ip', ['uses' => 'SysControllers\IpController@all']);
 	Route::delete('ip/{id}', ['uses' => 'SysControllers\IpController@delete']);
 
-	Route::post('servicio', ['uses' => 'SysControllers\ServicioController@add']);
-	Route::get('servicio', ['uses' => 'SysControllers\ServicioController@all']);			//falta busqueda
+	Route::get('servicio', ['uses' => 'SysControllers\ServicioController@all']);
 	Route::get('servicio/{id}', ['uses' => 'SysControllers\ServicioController@one']);
+	Route::post('servicio', ['uses' => 'SysControllers\ServicioController@add']);
 	Route::put('servicio/{id}', ['uses' => 'SysControllers\ServicioController@update']);	//falta
 	Route::delete('servicio/{id}', ['uses' => 'SysControllers\ServicioController@delete']);
 
+	Route::get('servicio/current/registros', ['uses' => 'SysControllers\RegistrosController@all']);
+	Route::post('servicio/current/registros', ['uses' => 'SysControllers\RegistrosController@add']);
 });
 
 
