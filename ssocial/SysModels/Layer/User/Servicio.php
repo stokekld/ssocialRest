@@ -72,7 +72,14 @@ class Servicio extends Model
 	
 	
 	
-	
+	public function registros()
+	{
+		$registros = $this -> hasMany('Layer\Entities\Registro', 'id_serv', 'id_serv')->getResults();
+
+		return $registros -> each( function($item){
+			$item -> translateToUser();
+		})->toArray();
+	}
 	
 	
 	

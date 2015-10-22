@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SysControllers;
 
 use App\Http\Controllers\Controller;
 use Layer\Entities\Registro;
+use Layer\User\Servicio;
 
 /**
 * 
@@ -13,16 +14,22 @@ class RegistrosController extends Controller
 	
 	protected $registro;
 	protected $user;
+	protected $id;
+	protected $servicio;
 
 	function __construct()
 	{
 		$this -> registro = new Registro;
 		$this -> user = \App::make('UserSys');
+		$this -> id = $this -> user -> data['id_serv'];
+		$this -> servicio = (new Servicio) -> findById($this -> id);
 	}
 	
 	public function add()
 	{
 		$data = request()->json()->all();
+
+		$data['idServ'] = $this -> id;
 
 		return $this -> user -> response( response(), $this -> registro -> insert($data), 201);		
 	}
@@ -34,8 +41,9 @@ class RegistrosController extends Controller
 
 	public function all()
 	{
+		$servicio = $this -> servicio;
 
-		var_dump($this -> user);
+		var_dump($servicio -> registros());
 		// $data = request()->all();
 
 		// if ( empty($data) )
