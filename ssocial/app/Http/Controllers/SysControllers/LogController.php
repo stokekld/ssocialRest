@@ -23,14 +23,30 @@ class LogController extends Controller
 
 		$data = Admin::logIn($credentials, "id_admin", "admin_user", "admin_pass", "admin");
 
-		if( !$data )
-			$data = Servicio::logIn($credentials, "id_serv", "serv_user", "serv_pass", "servicio");
+		if ( $token = $this -> responseToken($data) ) return $token;
 
-		if( !$data )
-			throw new RestException(__FILE__, "El usuario/password no es correcto.", 401, ["message" => "El usuario/password no es correcto."]);
+		$data = Servicio::logIn($credentials, "id_serv", "serv_user", "serv_pass", "servicio");
 
-		$token = TokenFromUser::getToken($data);
+		if ( $token = $this -> responseToken($data) ) return $token;
 
-		return response()->json(compact("token"), 200);
+		throw new RestException(__FILE__, "El usuario/password no es correcto.", 401, ["message" => "El usuario/password no es correcto."]);
+	}
+
+	private function responseToken($data)
+	{
+		if (is_array($data))
+		{
+			if ($data['type'] == 'servicio')
+			{
+				$servicio = Servicio::find($data['data']['id_serv']);
+				if (!$servicio -> serv_activo)
+					throw new RestException(__FILE__, "Sin acceso a la plataforma.", 401, ["message" => "Sin acceso a la plataforma."]);
+			}
+
+			$token = TokenFromUser::getToken($data);
+			return response()->json(compact("token"), 200);
+		}
+
+		return null;
 	}
 }

@@ -12,55 +12,45 @@ use Layer\User\Servicio;
 class RegistrosController extends Controller
 {
 	
-	protected $registro;
-	protected $user;
-	protected $id;
-	protected $servicio;
-
 	function __construct()
 	{
 		$this -> registro = new Registro;
 		$this -> user = \App::make('UserSys');
-		$this -> id = $this -> user -> data['id_serv'];
-		$this -> servicio = (new Servicio) -> findById($this -> id);
+		// $this -> servicio = (new Servicio) -> findById($this -> id);
 	}
-	
-	public function add()
+
+	public function all($id)
 	{
+		$servicio = (new Servicio) -> findById($id);
+
+		$registros = $servicio -> registros();
+
+		return $this -> user -> response( response(), $registros, 200);
+	}
+
+	public function update($idS, $idR)
+	{
+		$servicio = (new Servicio) -> findById($idS);
+
+		$registro = $servicio -> existReg($idR);
+
+		if (!$registro)
+			$this -> throwException(__FILE__, "findById: No existe el elemento.", 404, ['message' => "No existe el elemento."]);
+
 		$data = request()->json()->all();
-
-		$data['idServ'] = $this -> id;
-
-		return $this -> user -> response( response(), $this -> registro -> insert($data), 201);		
-	}
-
-	public function one($id)
-	{
-		// return $this -> user -> response( response(), $this -> registro -> findById($id, true), 200 );
-	}
-
-	public function all()
-	{
-		$servicio = $this -> servicio;
-
-		var_dump($servicio -> registros());
-		// $data = request()->all();
-
-		// if ( empty($data) )
-		// 	return $this -> user -> response( response(), $this -> registro -> allThem(), 200 );
-		// else
-		// 	return $this -> user -> response( response(), $this -> registro -> search($data), 200 );
-	}
-
-	public function update($id)
-	{
-		// $data = request()->json()->all();
 		
-		// return $this -> user -> response( response(), $this -> registro -> updateByID($id, $data), 200);		
+		return $this -> user -> response( response(), $this -> registro -> updateByID($idR, $data), 200);
 	}
 
-	public function delete($id)
+	public function delete($idS, $idR)
 	{
-		// return $this -> user -> response( response(), $this -> registro -> deleteById($id), 200 ); 
+		$servicio = (new Servicio) -> findById($idS);
+
+		$registro = $servicio -> existReg($idR);
+
+		if (!$registro)
+			$this -> throwException(__FILE__, "findById: No existe el elemento.", 404, ['message' => "No existe el elemento."]);
+
+		return $this -> user -> response( response(), $this -> registro -> deleteById($idR), 200 ); 
 	}
 }

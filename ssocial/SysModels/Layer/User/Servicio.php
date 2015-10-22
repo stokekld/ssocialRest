@@ -80,6 +80,15 @@ class Servicio extends Model
 			$item -> translateToUser();
 		})->toArray();
 	}
+
+	public function existReg($id)
+	{
+		$registros = $this -> hasMany('Layer\Entities\Registro', 'id_serv', 'id_serv')->getResults()->filter(function($item) use ($id) {
+			return $item -> id_registro == $id;
+		});
+
+		return ( $registros -> count() === 1) ? true : false;
+	}
 	
 	
 	

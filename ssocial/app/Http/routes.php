@@ -33,8 +33,14 @@ Route::group(['middleware' => 'auth.user'], function(){
 	Route::put('servicio/{id}', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\ServicioController@update']);	//falta
 	Route::delete('servicio/{id}', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\ServicioController@delete']);
 
-	Route::get('servicio/current/registros', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistrosController@all']);
-	Route::post('servicio/current/registros', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistrosController@add']);
+	Route::get('servicio/{id}/registros', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\RegistrosController@all']);
+	Route::put('servicio/{idS}/registros/{idR}', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\RegistrosController@update']);
+	Route::delete('servicio/{idS}/registros/{idR}', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\RegistrosController@delete']);
+
+	Route::get('servicio/current/status', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistroServController@getStatus']);
+	Route::post('servicio/current/inicio', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistroServController@ini']);
+	Route::post('servicio/current/fin', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistroServController@fin']);
+	// Route::get('servicio/current/registros', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistrosController@all']);
 });
 
 
