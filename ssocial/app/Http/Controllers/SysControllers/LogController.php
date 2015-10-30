@@ -44,7 +44,9 @@ class LogController extends Controller
 			}
 
 			$token = TokenFromUser::getToken($data);
-			return response()->json(compact("token"), 200);
+			$type = $data['type'];
+
+			return response()->json(compact("token", "type"), 200);
 		}
 
 		return null;
