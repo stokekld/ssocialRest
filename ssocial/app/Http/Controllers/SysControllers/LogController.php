@@ -29,7 +29,7 @@ class LogController extends Controller
 
 		if ( $token = $this -> responseToken($data) ) return $token;
 
-		throw new RestException(__FILE__, "El usuario/password no es correcto.", 401, ["message" => "El usuario/password no es correcto."]);
+		throw new RestException(__FILE__, "El usuario/password no es correcto.", 403, ["message" => "El usuario/password no es correcto."]);
 	}
 
 	private function responseToken($data)
@@ -40,7 +40,7 @@ class LogController extends Controller
 			{
 				$servicio = Servicio::find($data['data']['id_serv']);
 				if (!$servicio -> serv_activo)
-					throw new RestException(__FILE__, "Sin acceso a la plataforma.", 401, ["message" => "Sin acceso a la plataforma."]);
+					throw new RestException(__FILE__, "Sin acceso a la plataforma.", 403, ["message" => "Sin acceso a la plataforma."]);
 			}
 
 			$token = TokenFromUser::getToken($data);

@@ -47,7 +47,7 @@ trait logInTrait
 
     	$obj = new static();
 
-    	$results = $obj->select([$fieldId, $fieldUser, $fieldPass])->where([$fieldUser => $credentials['user'], $fieldPass => $credentials['password'] ])->get();
+    	$results = $obj->select([$fieldId, $fieldUser, $fieldPass])->where([$fieldUser => $credentials['user'], $fieldPass => md5($credentials['password']) ])->get();
 
     	if ($results->count() != 1)
     		return false;
