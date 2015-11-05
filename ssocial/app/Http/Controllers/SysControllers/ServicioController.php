@@ -24,6 +24,9 @@ class ServicioController extends Controller
 	{
 		$data = request()->json()->all();
 
+		if ( isset( $data['passServ'] ) )
+			$data['passServ'] = md5($data['passServ']);
+
 		return $this -> user -> response( response(), $this -> servicio -> insert($data), 201);		
 	}
 
