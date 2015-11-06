@@ -76,8 +76,10 @@ class Servicio extends Model
 	{
 		$registros = $this -> hasMany('Layer\Entities\Registro', 'id_serv', 'id_serv')->getResults();
 
-		return $registros -> each( function($item){
+		return $registros -> filter( function($item){
 			$item -> translateToUser();
+			$item -> seconds = strtotime( substr($item -> regIni, 0, 11).$item -> regFin) - strtotime($item -> regIni);
+			return $item -> regVal === "1";
 		})->toArray();
 	}
 

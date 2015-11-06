@@ -49,6 +49,8 @@ class RegistroServController extends Controller
 		{
 			$result = $status->first()->translateToUser();
 
+			$result -> seconds = time() - strtotime($result -> regIni);
+
 			return $this -> user -> response( response(), $result, 200);
 		}
 
@@ -64,7 +66,7 @@ class RegistroServController extends Controller
 		$reg = $this -> registro;
 
 		$data["idServ"] = $this -> id;
-		$data["regIni"] = date("Y-m-d H:i:00");
+		$data["regIni"] = date("Y-m-d H:i:s");
 		$data["regFin"] = null;
 		$data["regAct"] = null;
 		$data["regVal"] = 0;
@@ -83,7 +85,7 @@ class RegistroServController extends Controller
 
 		$fromUser = request()->json()->all();
 
-		$data["regFin"] = date("Y-m-d H:i:00");
+		$data["regFin"] = date("Y-m-d H:i:s");
 		$data["regAct"] = @$fromUser["regAct"];
 
 		$result = $status->first();
@@ -92,13 +94,23 @@ class RegistroServController extends Controller
 
 		$time = (strtotime($data["regFin"]) - strtotime($result -> reg_inicio)) / (60 * 60);
 
-		if ($time < 8)
+		// validacion de horas
+		if ($time > 0.25 && $time < 8)
 			$data["regVal"] = 1;
 
 
 		$result -> updateByID($id, $data);
 
-		return $this -> user -> response( response(), $result->findById($id, true), 201);
+		$reg = $result->findById($id, true);
 
+		$reg['seconds'] = strtotime( substr($reg['regIni'], 0, 11).$reg['regFin']) - strtotime($reg['regIni']);
+
+		return $this -> user -> response( response(), $reg, 201);
+
+	}
+
+	public function all()
+	{
+		return $this -> user -> response( response(), $this -> servicio -> registros(), 200);
 	}
 }

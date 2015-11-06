@@ -39,8 +39,8 @@ Route::group(['middleware' => 'auth.user'], function(){
 
 	Route::get('servicio/current/status', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistroServController@getStatus']);
 	Route::post('servicio/current/inicio', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistroServController@ini']);
-	Route::post('servicio/current/fin', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistroServController@fin']);
-	// Route::get('servicio/current/registros', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistrosController@all']);
+	Route::post('servicio/current/fin', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistroServController@fin']);	
+	Route::get('servicio/current/ownregistros', ['middleware' => 'authorize.user:servicio', 'uses' => 'SysControllers\RegistroServController@all']);
 });
 
 

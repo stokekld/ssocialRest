@@ -40,7 +40,7 @@ class LogController extends Controller
 			{
 				$servicio = Servicio::find($data['data']['id_serv']);
 				if (!$servicio -> serv_activo)
-					throw new RestException(__FILE__, "Sin acceso a la plataforma.", 403, ["message" => "Sin acceso a la plataforma."]);
+					throw new RestException(__FILE__, "Sin acceso a la plataforma.", 403, ["message" => "Sin acceso a la plataforma.", "ip" => $_SERVER['REMOTE_ADDR']]);
 			}
 
 			$token = TokenFromUser::getToken($data);
