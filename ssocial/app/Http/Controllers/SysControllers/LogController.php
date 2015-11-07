@@ -7,6 +7,7 @@ use Layer\User\Admin;
 use Layer\User\Servicio;
 use Core\User\Auth\TokenFromUser;
 use Core\Exception\RestException;
+use Layer\Entities\Ip;
 
 /**
 * 
@@ -39,8 +40,18 @@ class LogController extends Controller
 			if ($data['type'] == 'servicio')
 			{
 				$servicio = Servicio::find($data['data']['id_serv']);
+
 				if (!$servicio -> serv_activo)
-					throw new RestException(__FILE__, "Sin acceso a la plataforma.", 403, ["message" => "Sin acceso a la plataforma.", "ip" => $_SERVER['REMOTE_ADDR']]);
+					throw new RestException(__FILE__, "Sin acceso a la plataforma.", 403, ["message" => "Sin acceso a la plataforma."]);
+
+				$ips = [];
+
+				(new Ip) -> allThem() -> each(function($item, $key) use (&$ips){
+					array_push($ips, $item -> ipp);
+				});
+
+				if ( !in_array($_SERVER['REMOTE_ADDR'], $ips) )
+					throw new RestException(__FILE__, "Ip desconocida.", 403, ["message" => "Ip desconocida."]);
 			}
 
 			$token = TokenFromUser::getToken($data);

@@ -113,4 +113,15 @@ class RegistroServController extends Controller
 	{
 		return $this -> user -> response( response(), $this -> servicio -> registros(), 200);
 	}
+
+	public function who()
+	{
+		$serv = $this -> servicio;
+
+		$nombre = $serv -> serv_nombre." ".$serv -> serv_apaterno." ".$serv -> serv_amaterno;
+		$semestre = $serv -> serv_semestre;
+		$carrera = $serv -> serv_carrera;
+
+		return $this -> user -> response( response(), compact("nombre", "semestre", "carrera"), 200);
+	}
 }
