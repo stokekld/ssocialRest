@@ -65,6 +65,9 @@ class Registro extends Model
         "regVal" => ['required'],
     ];
 
-    
+    public function servicio()
+    {
+        return $this->belongsTo('Layer\User\Servicio', 'id_serv');
+    }
 	
 }

@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth.user'], function(){
 	Route::put('servicio/{id}', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\ServicioController@update']);	//falta
 	Route::delete('servicio/{id}', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\ServicioController@delete']);
 
+	Route::get('registros/novalidados', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\RegistrosController@allNoValidate']);
 	Route::get('servicio/{id}/registros', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\RegistrosController@all']);
 	Route::put('servicio/{idS}/registros/{idR}', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\RegistrosController@update']);
 	Route::delete('servicio/{idS}/registros/{idR}', ['middleware' => 'authorize.user:admin', 'uses' => 'SysControllers\RegistrosController@delete']);

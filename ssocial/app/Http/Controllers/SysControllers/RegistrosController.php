@@ -53,4 +53,20 @@ class RegistrosController extends Controller
 
 		return $this -> user -> response( response(), $this -> registro -> deleteById($idR), 200 ); 
 	}
+
+	public function allNoValidate()
+	{
+		$regNoVal = $this -> registro -> where('reg_validacion', 0) -> orderBy('id_serv') -> get();
+		$servicio = (new Servicio);
+
+		$regNoVal -> each(function($item, $key) use ($servicio){
+
+			$item -> translateToUser();
+			$item -> serv = $servicio -> findById($item -> idServ, true);
+
+		});
+
+
+		return $this -> user -> response( response(), compact('regNoVal'), 200 ); 
+	}
 }
